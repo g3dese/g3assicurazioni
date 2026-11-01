@@ -1,0 +1,44 @@
+# Pubblica automaticamente il sito sullo spazio web Aruba via FTP
+# ogni volta che si aggiornano i file sul ramo "main".
+#
+# Da configurare una sola volta nel repository (Settings → Secrets and variables → Actions):
+#   Secrets:   FTP_SERVER   (es. ftp.g3assicurazioni.it)
+#              FTP_USERNAME (utente FTP dell'hosting Aruba)
+#              FTP_PASSWORD (password FTP dell'hosting Aruba)
+#   Variables (facoltative):
+#              FTP_DIR      cartella del sito sul server, con "/" finale (predefinita: www.g3assicurazioni.it/)
+#              FTP_PROTOCOL ftps (predefinito, connessione cifrata) oppure ftp
+
+name: Pubblica su Aruba
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pubblica-su-aruba
+  cancel-in-progress: false
+
+jobs:
+  pubblica:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica i file del repository
+        uses: actions/checkout@v4
+
+      - name: Carica i file su Aruba via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          server-dir: ${{ vars.FTP_DIR || 'www.g3assicurazioni.it/' }}
+          # Carica solo i file del sito: niente file di GitHub, istruzioni o configurazioni
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .nojekyll
+            README.md
