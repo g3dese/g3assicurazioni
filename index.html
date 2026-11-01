@@ -136,9 +136,7 @@ h1 em {
 }
 .btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 .btn--dark { background: var(--ink); color: #fff; border: 1px solid var(--ink); }
-.btn--dark:hover { background: var(--graphite); border-color: var(--graphite); }
 .btn--line { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
-.btn--line:hover { background: var(--ink); color: #fff; }
 .btn:focus-visible { outline: 2px solid var(--taupe); outline-offset: 3px; }
 
 .cs-info {
@@ -150,7 +148,17 @@ h1 em {
 .cs-info dt { font-size: 10.5px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .cs-info dd { font-size: 14.5px; line-height: 1.65; color: var(--text); }
 .cs-info a { text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color .25s; }
-.cs-info a:hover { border-color: var(--taupe); }
+/* Effetto al passaggio del mouse solo sui dispositivi con mouse:
+   su iPhone e Android il "passaggio" resterebbe attivo dopo il tocco */
+@media (hover: hover) and (pointer: fine) {
+  .btn--dark:hover { background: var(--graphite); border-color: var(--graphite); }
+  .btn--line:hover { background: var(--ink); color: #fff; }
+  .cs-info a:hover { border-color: var(--taupe); }
+}
+/* Sui touch: solo un breve riscontro mentre il dito preme il pulsante */
+.btn { -webkit-tap-highlight-color: transparent; }
+.btn--dark:active { background: var(--graphite); border-color: var(--graphite); }
+.btn--line:active { background: var(--bg-off); }
 /* Email sempre su una riga: sui telefoni stretti il carattere si riduce quanto basta */
 .cs-mail { white-space: nowrap; font-size: min(14.5px, calc((100vw - 40px) / 24.5)); }
 
