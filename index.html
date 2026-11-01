@@ -239,23 +239,6 @@ footer a { color: var(--accent); }
   .cs-rings .r1 { width: 520px; height: 520px; right: -260px; top: -160px; }
   .cs-rings .r2 { display: none; }
 }
-/* Telefono in orizzontale: intestazione più compatta e icone social in colonna,
-   fisse sul bordo destro e centrate in altezza */
-@media (orientation: landscape) and (max-height: 500px) {
-  .cs-header { --bar-h: 70px; --shrink: translateY(-10px) scale(.68); }
-  .cs-header .cs-wrap { padding: 22px 0 6px; }
-  .cs-logo { width: 220px; }
-  body { padding-top: 106px; }
-  main { padding-top: 28px; padding-right: 76px; }
-  .cs-social,
-  .cs-header.is-scrolled .cs-social {
-    position: fixed; right: max(16px, env(safe-area-inset-right)); top: 50%;
-    flex-direction: column; gap: 8px;
-    transform: translateY(-50%);
-  }
-  .cs-social a { width: 38px; height: 38px; background: rgba(251,249,245,.95); }
-  .cs-social svg { width: 16px; height: 16px; }
-}
 @media (prefers-reduced-motion: reduce) {
   .cs-rings svg { animation: none; }
   .cs-header::after, .cs-home, .cs-social { transition: none; }
