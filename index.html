@@ -155,21 +155,6 @@ h1 em {
 .cs-areas { margin-bottom: 48px; }
 /* Elenco completo per i lettori di schermo (non visibile) */
 .cs-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-/* Carosello: 3 soluzioni alla volta, cambiano con una dissolvenza */
-.cs-rotator { list-style: none; display: grid; gap: 12px; margin: 0; padding: 0; }
-.cs-rotator li {
-  position: relative; padding-left: 22px; min-height: var(--slot-h, 1.5em);
-  display: flex; align-items: center;
-  font-size: 11.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; line-height: 1.5;
-  color: var(--ink);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
-}
-.cs-rotator li::before {
-  content: ''; position: absolute; left: 0; top: 50%; margin-top: -5px; width: 9px; height: 9px; border-radius: 50%;
-  border: 1.5px solid var(--taupe); border-right-color: transparent; transform: rotate(45deg);
-}
-.cs-rotator li.is-out { opacity: 0; transform: translateY(6px); }
-@media (max-width: 640px) { .cs-rotator li { letter-spacing: .14em; font-size: 11px; } }
 
 /* Contatti */
 .cs-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 52px; }
@@ -280,6 +265,32 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
           mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
   pointer-events: none; z-index: 0;
 }
+
+/* Riga unica che scorre in orizzontale con tutte le soluzioni */
+.cs-marquee {
+  position: relative; overflow: hidden; padding: 4px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+.cs-marquee-track { display: flex; width: max-content; animation: csMarquee 55s linear infinite; }
+.cs-marquee ul { display: flex; list-style: none; margin: 0; padding: 0; flex-shrink: 0; }
+.cs-marquee li {
+  position: relative; white-space: nowrap; padding: 0 30px 0 22px;
+  font-size: 11.5px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; line-height: 1.6; color: var(--ink);
+}
+.cs-marquee li::before {
+  content: ''; position: absolute; left: 0; top: 50%; margin-top: -5px; width: 9px; height: 9px; border-radius: 50%;
+  border: 1.5px solid var(--taupe); border-right-color: transparent; transform: rotate(45deg);
+}
+@keyframes csMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (hover: hover) and (pointer: fine) { .cs-marquee:hover .cs-marquee-track { animation-play-state: paused; } }
+@media (max-width: 640px) { .cs-marquee li { font-size: 11px; letter-spacing: .16em; padding-right: 24px; } .cs-marquee-track { animation-duration: 45s; } }
+@media (prefers-reduced-motion: reduce) {
+  .cs-marquee { -webkit-mask-image: none; mask-image: none; }
+  .cs-marquee-track { animation: none; width: auto; }
+  .cs-marquee ul { flex-wrap: wrap; row-gap: 10px; }
+  .cs-marquee ul + ul { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .cs-rings svg { animation: none; }
   .cs-header::after, .cs-home, .cs-social { transition: none; }
@@ -354,9 +365,11 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
 
     <div class="cs-areas fade d4">
       <ul class="cs-sr"><li>Famiglia e Benessere</li><li>Consulenza e pianificazione finanziaria</li><li>Auto, Mobilità e Noleggio a lungo termine</li><li>Consulenza patrimoniale</li><li>Welfare</li><li>Check-up PMI</li><li>Tutela legale</li><li>Protezione dei beni</li></ul>
-      <ul class="cs-rotator" id="csRotator" aria-hidden="true">
-        <li>Famiglia e Benessere</li><li>Consulenza e pianificazione finanziaria</li><li>Auto, Mobilità e Noleggio a lungo termine</li>
-      </ul>
+      <div class="cs-marquee" aria-hidden="true">
+        <div class="cs-marquee-track">
+          <ul><li>Famiglia e Benessere</li><li>Consulenza e pianificazione finanziaria</li><li>Auto, Mobilità e Noleggio a lungo termine</li><li>Consulenza patrimoniale</li><li>Welfare</li><li>Check-up PMI</li><li>Tutela legale</li><li>Protezione dei beni</li></ul><ul><li>Famiglia e Benessere</li><li>Consulenza e pianificazione finanziaria</li><li>Auto, Mobilità e Noleggio a lungo termine</li><li>Consulenza patrimoniale</li><li>Welfare</li><li>Check-up PMI</li><li>Tutela legale</li><li>Protezione dei beni</li></ul>
+        </div>
+      </div>
     </div>
 
     <div class="cs-actions fade d5">
@@ -414,45 +427,6 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
 
 <script>
   try { document.getElementById('y').textContent = new Date().getFullYear(); } catch (e) {}
-  // Carosello delle soluzioni: 3 alla volta, scelte a caso, con dissolvenza sfalsata
-  (function () {
-    var list = document.getElementById('csRotator');
-    if (!list) return;
-    var all = [].map.call(document.querySelectorAll('.cs-sr li'), function (li) { return li.textContent; });
-    var slots = [].slice.call(list.children);
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-    // Altezza fissa per ogni riga (la voce più lunga): così la pagina non "salta" quando i testi cambiano
-    function fixHeight() {
-      var probe = slots[0].cloneNode(); probe.style.visibility = 'hidden'; probe.style.position = 'absolute'; probe.style.width = slots[0].offsetWidth + 'px';
-      list.appendChild(probe); var h = 0;
-      all.forEach(function (t) { probe.textContent = t; h = Math.max(h, probe.offsetHeight); });
-      list.removeChild(probe); list.style.setProperty('--slot-h', h + 'px');
-    }
-    var current = [];
-    function pick() {
-      var pool = shuffle(all.filter(function (t) { return current.indexOf(t) < 0; }));
-      return pool.slice(0, 3);
-    }
-    current = pick();
-    slots.forEach(function (li, i) { li.textContent = current[i]; });
-    fixHeight();
-    window.addEventListener('resize', fixHeight);
-    if (reduce) return;
-    function cycle() {
-      if (document.hidden) return;
-      var next = pick();
-      slots.forEach(function (li, i) {
-        var outDelay = Math.random() * 450;
-        setTimeout(function () {
-          li.classList.add('is-out');
-          setTimeout(function () { li.textContent = next[i]; li.classList.remove('is-out'); }, 750 + Math.random() * 250);
-        }, outDelay);
-      });
-      current = next;
-    }
-    setInterval(cycle, 4200);
-  })();
   // Logo fisso: quando si scorre, la barra in alto diventa compatta
   (function () {
     var h = document.getElementById('csHeader');
