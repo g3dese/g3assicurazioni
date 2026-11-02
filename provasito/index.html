@@ -2168,6 +2168,11 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
 
 .nav-actions .nav-social { padding-right: 16px; margin-right: 4px; border-right: 1px solid var(--border); }
 @media (max-width: 768px) { .nav-actions .nav-social { padding-right: 10px; margin-right: 0; } }
+
+/* Le icone social si rimpiccioliscono insieme al logo quando la barra diventa compatta */
+.nav-social { transform-origin: right center; transition: transform .35s var(--ease); }
+.nav.is-compact .nav-social { transform: scale(.8); }
+@media (prefers-reduced-motion: reduce) { .nav-social { transition: none; } }
 @media (prefers-reduced-motion: reduce) {
   .srvmap-ring-html, .orb, .srv-orb { animation: none !important; }
 }
