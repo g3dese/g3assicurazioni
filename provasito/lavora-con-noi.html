@@ -2173,6 +2173,39 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
   section[id], .srv-row[id], .jp-apply { scroll-margin-top: 72px; }
 }
 @media (prefers-reduced-motion: reduce) { .nav::before, .nav::after, .nav-logo, .nav-actions { transition: none; } }
+
+/* Icone social nella barra in alto */
+.nav-social { display: flex; gap: 8px; align-items: center; }
+.nav-social a {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink); border: 1px solid var(--border); background: #fff;
+  transition: color .25s, border-color .25s, background .25s; -webkit-tap-highlight-color: transparent;
+}
+.nav-social svg { width: 15px; height: 15px; display: block; }
+.nav-social .ico-line { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.nav-social .ico-line .dot { fill: currentColor; stroke: none; }
+.nav-social .ico-fill { fill: currentColor; }
+.nav-social a:focus-visible { outline: 2px solid var(--taupe); outline-offset: 3px; }
+.nav-social a:active { background: var(--bg-off); }
+@media (hover: hover) and (pointer: fine) {
+  .nav-social a:hover { color: #fff; border-color: transparent; }
+  .nav-social a[data-social="instagram"]:hover { background: radial-gradient(circle farthest-corner at 28% 100%, #ffe17d 0%, #ffcd69 10%, #fa9137 28%, #eb4141 42%, rgba(235,65,65,0) 82%), linear-gradient(135deg, #234bd7 12%, #c33cbe 58%); background-origin: border-box; background-repeat: no-repeat; }
+  .nav-social a[data-social="facebook"]:hover { background: #fff; color: #1877F2; border-color: #1877F2; }
+  .nav-social a[data-social="linkedin"]:hover { background: #0A66C2; }
+}
+/* Su mobile: icone accanto al pulsante Menu, il logo si adatta per lasciare spazio */
+@media (max-width: 768px) {
+  .nav-social { gap: 5px; }
+  .nav-social a { width: 30px; height: 30px; }
+  .nav-social svg { width: 13px; height: 13px; }
+}
+@media (max-width: 600px) {
+  .nav-logo-svg { width: clamp(118px, calc(100vw - 236px), 178px) !important; height: auto !important; }
+}
+
+.nav-actions .nav-social { padding-right: 16px; margin-right: 4px; border-right: 1px solid var(--border); }
+@media (max-width: 768px) { .nav-actions .nav-social { padding-right: 10px; margin-right: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .srvmap-ring-html, .orb, .srv-orb { animation: none !important; }
 }
@@ -2232,6 +2265,17 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
 </svg>
   </a>
   <div class="nav-actions">
+    <nav class="nav-social" aria-label="Seguici sui social">
+      <a href="https://www.instagram.com/generalidesenzanovilladelsole" data-social="instagram" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-line"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.4" cy="6.6" r=".9" class="dot"/></svg>
+      </a>
+      <a href="https://www.facebook.com/AgGeneraliDesenzanoDelGardaVillaDelSole" data-social="facebook" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-fill"><path d="M13.6 21v-7.9h2.7l.4-3.2h-3.1V7.9c0-.9.3-1.5 1.6-1.5h1.6V3.6c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.3H7.7v3.2h2.7V21z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/company/aggeneralidesenzanodelgardavilladelsole" data-social="linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-fill"><rect x="4" y="9.2" width="3.4" height="10.8" rx=".4"/><circle cx="5.7" cy="5.6" r="1.95"/><path d="M10 9.2h3.2v1.5c.5-.9 1.7-1.8 3.5-1.8 3.4 0 4 2.2 4 5V20h-3.4v-5.4c0-1.3 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V20H10z"/></svg>
+      </a>
+    </nav>
     <a href="index.html#contact" class="nav-cta">Contattaci</a>
     <a href="lavora-con-noi.html" class="nav-cta-alt" aria-current="page">Lavora con noi</a>
     <button class="nav-menu-btn" id="navMenuBtn" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Apri il menu">
