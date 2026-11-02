@@ -2147,6 +2147,32 @@ section[id], .srv-row[id] { scroll-margin-top: 112px; }
 .nav-actions .nav-cta { border: 1px solid var(--ink); }
 .nav-menu-btn { padding: 0 14px; }
 @media (max-width: 768px) { .nav-actions .nav-cta-alt, .nav-actions .nav-cta { display: none; } }
+
+/* ─── Barra in alto che si rimpicciolisce durante lo scroll (come nella coming soon) ───
+   L'altezza reale della barra non cambia: si animano solo trasformazioni, fluide anche su Safari iOS */
+.nav { --bar: 112px; --compact: 76px; --lift: calc((var(--bar) - var(--compact)) / -2); --logo-scale: .66;
+  background: transparent !important; border-bottom: 0 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  box-shadow: none !important; pointer-events: none; }
+.nav > * { pointer-events: auto; }
+.nav::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: #fff; border-bottom: 1px solid var(--border);
+  transform-origin: top; transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.nav::after { bottom: 0 !important; transform-origin: top; transition: transform .35s var(--ease); }
+.nav-logo { transform-origin: left center; transition: transform .35s var(--ease); will-change: transform; }
+.nav-actions { transition: transform .35s var(--ease); }
+.nav.is-compact::before { transform: scaleY(calc(var(--compact) / var(--bar))); box-shadow: 0 6px 24px rgba(23,21,19,.06); }
+.nav.is-compact::after { transform: translateY(calc(var(--compact) - var(--bar))); }
+.nav.is-compact .nav-logo { transform: translateY(var(--lift)) scale(var(--logo-scale)); }
+.nav.is-compact .nav-actions { transform: translateY(var(--lift)); }
+.nav.is-compact .nav-menu { margin-top: calc(8px + var(--compact) - var(--bar)); }
+section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
+@media (max-width: 600px) {
+  .nav { --bar: 88px; --compact: 62px; --logo-scale: .7; }
+  section[id], .srv-row[id], .jp-apply { scroll-margin-top: 72px; }
+}
+@media (prefers-reduced-motion: reduce) { .nav::before, .nav::after, .nav-logo, .nav-actions { transition: none; } }
 @media (prefers-reduced-motion: reduce) {
   .srvmap-ring-html, .orb, .srv-orb { animation: none !important; }
 }
@@ -2516,9 +2542,16 @@ section[id], .srv-row[id] { scroll-margin-top: 112px; }
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { setOpen(false); btn.focus(); } });
   })();
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('shadow', window.scrollY > 40);
-  }, { passive: true });
+  (function () {
+    var on = null, ticking = false;
+    function update() {
+      ticking = false;
+      var next = window.scrollY > 24;
+      if (next !== on) { on = next; nav.classList.toggle('is-compact', on); }
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  })();
 
   // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
