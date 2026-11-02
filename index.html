@@ -184,13 +184,14 @@ h1 em {
 .cs-info > div + div { margin-top: 20px; border-top: 1px solid var(--border); }
 .cs-info dt { font-size: 10.5px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .cs-info dd { font-size: 14.5px; line-height: 1.65; color: var(--text); }
-.cs-info a { text-decoration: none; border-bottom: 1px solid var(--border); transition: border-color .25s; }
+.cs-info a { text-decoration: none; border-bottom: 0; transition: color .25s; }
+.cs-info a:focus-visible, footer a:focus-visible { outline: 2px solid var(--taupe); outline-offset: 3px; border-radius: 2px; }
 /* Effetto al passaggio del mouse solo sui dispositivi con mouse:
    su iPhone e Android il "passaggio" resterebbe attivo dopo il tocco */
 @media (hover: hover) and (pointer: fine) {
   .btn--dark:hover { background: var(--graphite); border-color: var(--graphite); }
   .btn--line:hover { background: var(--ink); color: #fff; }
-  .cs-info a:hover { border-color: var(--taupe); }
+  .cs-info a:hover, footer a:hover { color: var(--accent); }
 }
 /* Sui touch: solo un breve riscontro mentre il dito preme il pulsante */
 .btn { -webkit-tap-highlight-color: transparent; }
@@ -213,7 +214,7 @@ footer {
 }
 footer .cs-wrap { max-width: 1100px; }
 footer strong { font-weight: 500; color: var(--text); }
-footer a { color: var(--accent); }
+footer a { color: var(--accent); text-decoration: none; transition: color .25s; }
 
 /* Comparsa morbida */
 .fade { opacity: 0; transform: translateY(16px); animation: fadeUp .8s var(--ease) forwards; }
