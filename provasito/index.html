@@ -2206,8 +2206,8 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
 }
 
 /* Bollino "Agenzia Miglior Esperienza Cliente" nella fila dei numeri della sezione iniziale */
-.hero-award { display: flex; flex-direction: column; text-decoration: none; color: inherit; -webkit-tap-highlight-color: transparent; }
-.hero-award-img { display: block; width: auto; height: 2.8rem; transform-origin: left center; transition: transform .3s var(--ease); }
+.hero-award { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; color: inherit; -webkit-tap-highlight-color: transparent; }
+.hero-award-img { display: block; width: auto !important; max-width: none; height: 2.8rem; aspect-ratio: 454 / 378; object-fit: contain; flex: none; transform-origin: left center; transition: transform .3s var(--ease); }
 .hero-award .hero-badge-label { line-height: 1.35; }
 .hero-award:focus-visible { outline: 2px solid var(--taupe); outline-offset: 4px; border-radius: 2px; }
 @media (hover: hover) and (pointer: fine) { .hero-award:hover .hero-award-img { transform: scale(1.08); } }
