@@ -2211,6 +2211,37 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
 .nav-social { transform-origin: right center; transition: transform .35s var(--ease); }
 .nav.is-compact .nav-social { transform: scale(.8); }
 @media (prefers-reduced-motion: reduce) { .nav-social { transition: none; } }
+
+/* Logo grande come nella coming soon (330 px su desktop), barra più alta che si compatta allo scroll */
+.nav { --bar: 164px; --compact: 96px; --logo-scale: .576; height: var(--bar) !important; }
+.nav-logo-svg { width: 330px !important; height: auto !important; }
+.hero { padding-top: 164px !important; }
+.hero-top { min-height: calc(100vh - 164px) !important; }
+.lv-pagehead { padding-top: 196px !important; }
+section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
+@media (max-width: 1180px) {
+  .nav { --bar: 140px; --compact: 88px; --logo-scale: .62; }
+  .nav-logo-svg { width: 260px !important; }
+  .hero { padding-top: 140px !important; } .hero-top { min-height: calc(100vh - 140px) !important; }
+  .lv-pagehead { padding-top: 172px !important; }
+}
+@media (max-width: 900px) {
+  .nav-logo-svg { width: clamp(170px, calc(100vw - 620px), 220px) !important; }
+  .nav { --bar: 124px; --compact: 80px; --logo-scale: .66; }
+  .hero { padding-top: 124px !important; } .hero-top { min-height: calc(100vh - 124px) !important; }
+  .lv-pagehead { padding-top: 156px !important; }
+  section[id], .srv-row[id], .jp-apply { scroll-margin-top: 88px; }
+}
+@media (max-width: 768px) and (min-width: 601px) {
+  .nav-logo-svg { width: 240px !important; }
+}
+@media (max-width: 600px) {
+  .nav { --bar: 100px; --compact: 66px; --logo-scale: .68; }
+  .nav-logo-svg { width: clamp(100px, calc(100vw - 240px), 210px) !important; }
+  .hero { padding-top: 100px !important; } .hero-top { min-height: calc(100vh - 100px) !important; }
+  .lv-pagehead { padding-top: 124px !important; }
+  section[id], .srv-row[id], .jp-apply { scroll-margin-top: 74px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .srvmap-ring-html, .orb, .srv-orb { animation: none !important; }
 }
@@ -2251,7 +2282,7 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 92px; }
 <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo" aria-label="G3 – Home">
-    <svg xmlns="http://www.w3.org/2000/svg" width="225" height="96" style="display:block;" class="nav-logo-svg" viewBox="0 0 487 208">
+    <svg xmlns="http://www.w3.org/2000/svg" width="330" height="116" style="display:block;" class="nav-logo-svg" viewBox="28.4 28.4 431.3 151.2">
 <title>G3 Logo — PRIMA VERSIONE</title>
 <defs>
 <linearGradient id="g3p-o" gradientUnits="userSpaceOnUse" x1="20" y1="20" x2="180" y2="180"><stop offset="0" stop-color="#6E6C69"/><stop offset="0.5" stop-color="#A28F7C"/><stop offset="1" stop-color="#D8C6AA"/></linearGradient>
