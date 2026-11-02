@@ -427,6 +427,21 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
 
 <script>
   try { document.getElementById('y').textContent = new Date().getFullYear(); } catch (e) {}
+  // Riga delle soluzioni: larga quanto la fila di pulsanti (finisce dove finisce "Come arrivare")
+  (function () {
+    var mq = document.querySelector('.cs-marquee');
+    var btns = [].slice.call(document.querySelectorAll('.cs-actions .btn'));
+    if (!mq || !btns.length) return;
+    function size() {
+      var top = btns[0].offsetTop;
+      var row = btns.filter(function (b) { return Math.abs(b.offsetTop - top) < 2; });
+      var w = row[row.length - 1].getBoundingClientRect().right - btns[0].getBoundingClientRect().left;
+      mq.style.maxWidth = Math.round(w) + 'px';
+    }
+    size();
+    window.addEventListener('resize', size);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+  })();
   // Logo fisso: quando si scorre, la barra in alto diventa compatta
   (function () {
     var h = document.getElementById('csHeader');
