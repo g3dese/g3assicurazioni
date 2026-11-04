@@ -2609,6 +2609,7 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
       </div>
       <div class="footer-links">
         <a href="#">Privacy Policy</a>
+        <a href="../cookie-policy.html">Cookie Policy</a>
         <a href="#" data-cookie-prefs>Preferenze cookie</a>
         <a href="#">Note Legali</a>
       </div>
@@ -2781,10 +2782,10 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
 <!-- Banner cookie -->
 <div class="ck-banner" id="ckBanner" role="dialog" aria-live="polite" aria-labelledby="ckTitle" aria-describedby="ckText" hidden>
   <p class="ck-title" id="ckTitle">Cookie</p>
-  <p class="ck-text" id="ckText">Usiamo cookie di Google Analytics per capire, in forma aggregata, come viene visitato il sito. Li attiviamo solo se li accetti; la scelta puoi cambiarla quando vuoi dal link “Preferenze cookie” in fondo alla pagina.</p>
+  <p class="ck-text" id="ckText">Usiamo cookie di Google Analytics per capire, in forma aggregata, come viene visitato il sito. Li attiviamo solo se li accetti; la scelta puoi cambiarla quando vuoi dal link “Preferenze cookie” in fondo alla pagina. <a href="../cookie-policy.html">Leggi la cookie policy</a></p>
   <div class="ck-actions">
-    <button type="button" class="ck-btn ck-btn--line" data-ck="denied">Rifiuta</button>
     <button type="button" class="ck-btn ck-btn--dark" data-ck="granted">Accetta</button>
+    <button type="button" class="ck-btn ck-btn--line" data-ck="denied">Rifiuta</button>
   </div>
 </div>
 <style>
@@ -2795,6 +2796,8 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
 .ck-banner::before { content: ''; position: absolute; top: -1px; left: -1px; width: 64px; height: 2px; background: linear-gradient(135deg, #6E6C69 0%, #A28F7C 50%, #D8C6AA 100%); }
 .ck-title { font-size: 10.5px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: #74624F; margin: 0 0 8px; }
 .ck-text { font-size: 13.5px; line-height: 1.65; color: #4F4C48; margin: 0 0 16px; }
+.ck-text a { color: #74624F; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; white-space: nowrap; }
+.ck-text a:focus-visible { outline: 2px solid #A28F7C; outline-offset: 2px; }
 .ck-actions { display: flex; gap: 10px; justify-content: flex-end; }
 .ck-btn { font: inherit; font-size: 11.5px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; padding: 11px 20px; border-radius: 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .ck-btn--dark { background: #171513; color: #fff; border: 1px solid #171513; }
@@ -2809,16 +2812,28 @@ section[id], .srv-row[id], .jp-apply { scroll-margin-top: 104px; }
     function get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
     function set(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
     function show() { box.hidden = false; }
+    // Se il consenso viene revocato, cancella i cookie di Google Analytics già salvati
+    function clearGa() {
+      var host = location.hostname, parts = host.split('.'), doms = ['', host];
+      for (var i = 1; i < parts.length - 1; i++) doms.push('.' + parts.slice(i).join('.'));
+      document.cookie.split(';').forEach(function (c) {
+        var n = c.split('=')[0].trim();
+        if (n === '_ga' || n.indexOf('_ga_') === 0 || n === '_gid' || n === '_gat') {
+          doms.forEach(function (d) { document.cookie = n + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : ''); });
+        }
+      });
+    }
     box.querySelectorAll('[data-ck]').forEach(function (b) {
       b.addEventListener('click', function () {
         var v = b.getAttribute('data-ck');
         set(v);
         if (typeof gtag === 'function') gtag('consent', 'update', { analytics_storage: v });
+        if (v === 'denied') clearGa();
         box.hidden = true;
       });
     });
     document.querySelectorAll('[data-cookie-prefs]').forEach(function (a) {
-      a.addEventListener('click', function (e) { e.preventDefault(); show(); var f = box.querySelector('[data-ck="denied"]'); if (f) f.focus(); });
+      a.addEventListener('click', function (e) { e.preventDefault(); show(); var f = box.querySelector('[data-ck]'); if (f) f.focus(); });
     });
     var v = get();
     if (v !== 'granted' && v !== 'denied') show();
