@@ -497,13 +497,15 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
 <!-- Banner cookie -->
 <div class="ck-banner" id="ckBanner" role="dialog" aria-live="polite" aria-labelledby="ckTitle" aria-describedby="ckText" hidden>
   <div class="ck-view" id="ckMain">
-    <p class="ck-title" id="ckTitle">Cookie</p>
+    <div class="ck-head">
+      <p class="ck-title" id="ckTitle">Cookie</p>
+      <button type="button" class="ck-link" data-ck="denied">Continua senza accettare</button>
+    </div>
     <p class="ck-text" id="ckText">Usiamo cookie di Google Analytics per capire, in forma aggregata, come viene visitato il sito. Li attiviamo solo se li accetti; la scelta puoi cambiarla quando vuoi dal link “Preferenze cookie” in fondo alla pagina. <a href="cookie-policy.html">Leggi la cookie policy</a></p>
     <div class="ck-actions">
       <button type="button" class="ck-btn ck-btn--dark ck-btn--main" data-ck="granted">Accetta</button>
       <button type="button" class="ck-btn ck-btn--line" data-ck-open>Seleziona</button>
     </div>
-    <p class="ck-skip"><button type="button" class="ck-link" data-ck="denied">Continua senza accettare</button></p>
   </div>
   <div class="ck-view" id="ckPrefs" hidden>
     <p class="ck-title" id="ckTitle2">Seleziona i cookie</p>
@@ -538,6 +540,10 @@ footer a { color: var(--accent); text-decoration: none; transition: color .25s; 
 .ck-btn--line { flex: 1; }
 .ck-btn--dark { background: #171513; color: #fff; border: 1px solid #171513; }
 .ck-btn--line { background: #fff; color: #171513; border: 1px solid #171513; }
+.ck-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 8px; }
+.ck-head .ck-title { margin: 0; }
+.ck-head .ck-link { margin: -8px -4px -8px 0; padding: 8px 4px; white-space: nowrap; }
+#ckMain .ck-actions { margin-bottom: 8px; }
 .ck-skip { margin: 12px 0 0; text-align: right; font-size: 12.5px; line-height: 1.4; }
 .ck-link { font: inherit; font-size: 12.5px; color: #4F4C48; background: none; border: 0; padding: 4px 0; cursor: pointer; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; -webkit-tap-highlight-color: transparent; }
 .ck-btn:focus-visible, .ck-link:focus-visible, .ck-banner a:focus-visible, .ck-switch input:focus-visible + span { outline: 2px solid #A28F7C; outline-offset: 2px; }
@@ -597,7 +603,7 @@ label.ck-opt-head { cursor: pointer; }
     box.querySelector('[data-ck-open]').addEventListener('click', function () { view(true); stats.focus(); });
     box.querySelector('[data-ck-save]').addEventListener('click', function () { choose(stats.checked ? 'granted' : 'denied'); });
     document.querySelectorAll('[data-cookie-prefs]').forEach(function (a) {
-      a.addEventListener('click', function (e) { e.preventDefault(); show(); var f = box.querySelector('[data-ck]'); if (f) f.focus(); });
+      a.addEventListener('click', function (e) { e.preventDefault(); show(); var f = box.querySelector('[data-ck="granted"]'); if (f) f.focus(); });
     });
     var v = get();
     if (v !== 'granted' && v !== 'denied') show();
